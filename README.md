@@ -18,5 +18,12 @@ As I build upon this program, I aim to make tasks easier for developers by provi
 visual designing and animation testing. Animations are supported, but are limited. All designs can be
 exported to any project folder. All exported files will be '<b>[Project Name].lua</b>' 
 
-Any image files used within the editor ill be copied to a subdirectory named '<b>assets</b>' withinthe
-chosen project directory.
+Any image files used within the editor will be copied to a subdirectory named '<b>assets</b>' within the
+chosen project directory. If the files already exist in said directory, then they will NOT be overwritten.
+
+# Contributing
+If you are willing to improve Solar2DGUI by contributing code, by all means, fork this repository and create a pull request with any desired improvements.
+
+# Creator
+Solar2DGUI is maintained by me, John C., <a href = "https://www.twitter.com/CodeIsLife101">CodeIsLife101</a> on twitter andI can be found
+under the same name here: <a href = "https://t.co/Wx1BfiNx9Y">Shibori Clan: Shib Ninja Token</a> on Telegram and our webpage is <a href = "https://shibninja.com/dojo">Shibori Dojo</a>. Feel free to stop by and say hi!
