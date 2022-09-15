@@ -1,0 +1,161 @@
+object transForm: TtransForm
+  Left = 0
+  Top = 0
+  Caption = 'Form2'
+  ClientHeight = 125
+  ClientWidth = 317
+  Position = MainFormCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object FloatAnimation1: TFloatAnimation
+    Duration = 0.200000002980232200
+    StartValue = 0.000000000000000000
+    StopValue = 0.000000000000000000
+  end
+  object GridPanelLayout1: TGridPanelLayout
+    Align = Top
+    ClipChildren = True
+    EnableDragHighlight = False
+    Margins.Left = 2.000000000000000000
+    Margins.Top = 2.000000000000000000
+    Margins.Right = 2.000000000000000000
+    Margins.Bottom = 2.000000000000000000
+    Position.X = 2.000000000000000000
+    Position.Y = 2.000000000000000000
+    Size.Width = 313.000000000000000000
+    Size.Height = 65.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    ColumnCollection = <
+      item
+        Value = 50.000000000000000000
+      end
+      item
+        Value = 50.000000000000000000
+      end>
+    ControlCollection = <
+      item
+        Column = 0
+        Control = Label1
+        Row = 0
+      end
+      item
+        Column = 1
+        Control = easeBox
+        Row = 0
+      end
+      item
+        Column = 0
+        Control = Label2
+        Row = 1
+      end
+      item
+        Column = 1
+        Control = interpolationBox
+        Row = 1
+      end>
+    RowCollection = <
+      item
+        SizeStyle = Absolute
+        Value = 25.000000000000000000
+      end
+      item
+        SizeStyle = Absolute
+        Value = 25.000000000000000000
+      end>
+    object Label1: TLabel
+      Align = Client
+      StyledSettings = [Family, Style, FontColor]
+      Margins.Left = 1.000000000000000000
+      Margins.Top = 1.000000000000000000
+      Margins.Right = 1.000000000000000000
+      Margins.Bottom = 1.000000000000000000
+      Size.Width = 154.500000000000000000
+      Size.Height = 23.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 14.000000000000000000
+      Text = 'Easing Type'
+      TabOrder = 1
+    end
+    object easeBox: TComboBox
+      Align = Client
+      Items.Strings = (
+        'In'
+        'InOut'
+        'Out'
+        'OutIn')
+      ItemIndex = 0
+      Margins.Left = 1.000000000000000000
+      Margins.Top = 1.000000000000000000
+      Margins.Right = 1.000000000000000000
+      Margins.Bottom = 1.000000000000000000
+      Size.Width = 154.500000000000000000
+      Size.Height = 23.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+    end
+    object Label2: TLabel
+      Align = Client
+      StyledSettings = [Family, Style, FontColor]
+      Margins.Left = 1.000000000000000000
+      Margins.Top = 1.000000000000000000
+      Margins.Right = 1.000000000000000000
+      Margins.Bottom = 1.000000000000000000
+      Size.Width = 154.500000000000000000
+      Size.Height = 23.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 14.000000000000000000
+      Text = 'Interpolation'
+      TabOrder = 0
+    end
+    object interpolationBox: TComboBox
+      Align = Client
+      Items.Strings = (
+        'Linear'
+        'Quadratic'
+        'Cubic'
+        'Quartic'
+        'Quintic'
+        'Sine'
+        'Exponential'
+        'Circular'
+        'Elastic'
+        'Back '
+        'Bounce ')
+      ItemIndex = 0
+      Margins.Left = 1.000000000000000000
+      Margins.Top = 1.000000000000000000
+      Margins.Right = 1.000000000000000000
+      Margins.Bottom = 1.000000000000000000
+      Size.Width = 154.500000000000000000
+      Size.Height = 23.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+    end
+  end
+  object CornerButton1: TCornerButton
+    Anchors = [akRight, akBottom]
+    ModalResult = 2
+    Position.X = 228.000000000000000000
+    Position.Y = 95.000000000000000000
+    Sides = [Top, Left, Bottom, Right]
+    TabOrder = 3
+    Text = 'Cancel'
+    XRadius = 3.000000000000000000
+    YRadius = 3.000000000000000000
+  end
+  object CornerButton2: TCornerButton
+    Anchors = [akRight, akBottom]
+    ModalResult = 1
+    Position.X = 140.000000000000000000
+    Position.Y = 95.000000000000000000
+    Sides = [Top, Left, Bottom, Right]
+    TabOrder = 2
+    Text = 'Done'
+    XRadius = 3.000000000000000000
+    YRadius = 3.000000000000000000
+    OnClick = CornerButton2Click
+  end
+end

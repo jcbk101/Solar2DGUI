@@ -1,0 +1,60 @@
+//---------------------------------------------------------------------------
+
+#ifndef CodeViewH
+#define CodeViewH
+
+#include <System.Classes.hpp>
+
+#include "CustomControls\TRectangleEx.h"
+#include "CustomControls\TTextEx.h"
+#include "CustomControls\TControlEx.h"
+
+
+class UICodeView
+{
+private:
+	void __fastcall generateBaseCode();
+	void __fastcall UICodeView::generateCleanUpCode();
+
+	void __fastcall writeNewRect(TRectangleEx *window, AnsiString groupName, AnsiString indent);
+	void __fastcall writeNewImageRect(TRectangleEx *window, AnsiString groupName, AnsiString indent);
+	void __fastcall writeNewImageSheetRect(TRectangleEx *window, AnsiString groupName, AnsiString sheetName, int sheetIndex, AnsiString indent);
+	void __fastcall writeNewText(TTextEx *text, AnsiString groupName, AnsiString indent);
+	void __fastcall writeAnchors(TControlEx *Control, AnsiString indent);
+
+
+
+public:
+	__fastcall UICodeView()
+	{
+		imgSheet = new TStringList();
+		objs = new TStringList();
+	}
+
+
+	~UICodeView()
+	{
+		delete imgSheet;
+		delete objs;
+	}
+
+	//The [Quote] compiled code [/Quote]
+	bool       changesMade;
+	bool       IsDisplayed;
+	AnsiString codeString;
+	AnsiString baseCodeStart;
+	AnsiString baseCodeEnd;
+	AnsiString baseCleanCode;
+	AnsiString imageSheet;
+	AnsiString projName;
+
+	TStringList *imgSheet;
+	TSringList * objs ;
+
+
+	AnsiString __fastcall buildSourceCode(TRectangle *Parent, AnsiString projectName);
+	void __fastcall buildWindowCode(TRectangleEx *window, AnsiString indent);
+	void __fastcall buildTextCode(TTextEx *text, AnsiString indent);
+};
+
+#endif

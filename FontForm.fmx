@@ -1,0 +1,248 @@
+object fontSelect: TfontSelect
+  Left = 0
+  Top = 0
+  Caption = 'Font'
+  ClientHeight = 447
+  ClientWidth = 450
+  Position = MainFormCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object cancelButton: TButton
+    Anchors = [akRight, akBottom]
+    ModalResult = 2
+    Position.X = 347.000000000000000000
+    Position.Y = 413.000000000000000000
+    Size.Width = 64.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 12
+    Text = 'Cancel'
+  end
+  object okButton: TButton
+    Anchors = [akRight, akBottom]
+    ModalResult = 1
+    Position.X = 265.000000000000000000
+    Position.Y = 413.000000000000000000
+    Size.Width = 64.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 13
+    Text = 'OK'
+    OnClick = okButtonClick
+  end
+  object sizeLabel: TLabel
+    Anchors = [akTop, akRight]
+    Position.X = 234.000000000000000000
+    Position.Y = 22.000000000000000000
+    Size.Width = 119.000000000000000000
+    Size.Height = 16.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.WordWrap = False
+    TextSettings.Trimming = None
+    Text = 'Size:'
+    TabOrder = 15
+  end
+  object GroupBox2: TGroupBox
+    Anchors = [akRight, akBottom]
+    Position.X = 234.000000000000000000
+    Position.Y = 281.000000000000000000
+    Size.Width = 180.000000000000000000
+    Size.Height = 120.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Sample'
+    TabOrder = 1
+    object sample: TLabel
+      Align = Client
+      StyledSettings = [FontColor]
+      Size.Width = 180.000000000000000000
+      Size.Height = 120.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 32.000000000000000000
+      TextSettings.HorzAlign = Center
+      TextSettings.Trimming = None
+      Text = 'AaBbYyZz'
+      TabOrder = 37
+    end
+  end
+  object GroupBox1: TGroupBox
+    Anchors = [akLeft, akRight, akBottom]
+    Position.X = 35.000000000000000000
+    Position.Y = 281.000000000000000000
+    Size.Width = 180.000000000000000000
+    Size.Height = 120.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Additional'
+    Visible = False
+    TabOrder = 0
+    object underline: TCheckBox
+      Position.X = 40.000000000000000000
+      Position.Y = 21.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 38
+      Text = 'Underline'
+      OnChange = underlineChange
+    end
+    object strikeout: TCheckBox
+      Position.X = 40.000000000000000000
+      Position.Y = 45.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 37
+      Text = 'Strike out'
+      OnChange = underlineChange
+    end
+  end
+  object fontSizeList: TListBox
+    Anchors = [akTop, akRight, akBottom]
+    Position.X = 234.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 180.000000000000000000
+    Size.Height = 203.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    DisableFocusEffect = True
+    Items.Strings = (
+      '6'
+      '7'
+      '8'
+      '9'
+      '10'
+      '11'
+      '12'
+      '14'
+      '16'
+      '18'
+      '20'
+      '22'
+      '24'
+      '26'
+      '28'
+      '36'
+      '48'
+      '72')
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 180.000000000000000000
+    Viewport.Height = 203.000000000000000000
+  end
+  object fontSize: TNumberBox
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Anchors = [akTop, akRight]
+    TabOrder = 6
+    Cursor = crIBeam
+    DecimalDigits = 0
+    Min = 6.000000000000000000
+    Max = 72.000000000000000000
+    Value = 32.000000000000000000
+    Position.X = 234.000000000000000000
+    Position.Y = 40.000000000000000000
+    HorzIncrement = 0.000000000000000000
+    VertIncrement = 0.000000000000000000
+    EnableDragHighlight = False
+    Size.Width = 180.000000000000000000
+    Size.Height = 21.000000000000000000
+    Size.PlatformDefault = False
+    OnKeyUp = fontSizeKeyUp
+  end
+  object fontFamilyList: TListBox
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Position.X = 35.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 180.000000000000000000
+    Size.Height = 203.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    DisableFocusEffect = True
+    Items.Strings = (
+      'Arial'
+      'Corbel'
+      'Courier'
+      'Courier New'
+      'Dimbo'
+      'Ebrima')
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Sorted = True
+    Viewport.Width = 180.000000000000000000
+    Viewport.Height = 203.000000000000000000
+  end
+  object familyName: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 3
+    Position.X = 35.000000000000000000
+    Position.Y = 40.000000000000000000
+    Size.Width = 180.000000000000000000
+    Size.Height = 21.000000000000000000
+    Size.PlatformDefault = False
+    OnKeyUp = familyNameKeyUp
+  end
+  object familyLabel: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 35.000000000000000000
+    Position.Y = 22.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 16.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.WordWrap = False
+    TextSettings.Trimming = None
+    Text = 'Font family'
+    TabOrder = 11
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 124
+    Top = 317
+    object LinkFillControlToPropertyTextPrompt: TLinkFillControlToProperty
+      Category = 'Quick Bindings'
+      Track = True
+      Control = fontFamilyList
+      Component = familyName
+      ComponentProperty = 'Text'
+      AutoFill = True
+      FillExpressions = <>
+      FillHeaderExpressions = <>
+      FillBreakGroups = <>
+    end
+    object LinkFillControlToPropertyFontFamily: TLinkFillControlToProperty
+      Category = 'Quick Bindings'
+      Track = True
+      Control = fontFamilyList
+      Component = sample
+      ComponentProperty = 'Font.Family'
+      AutoFill = True
+      FillExpressions = <>
+      InitializeControlValue = False
+      FillHeaderExpressions = <>
+      FillBreakGroups = <>
+    end
+    object LinkControlToPropertyFontSize: TLinkControlToProperty
+      Category = 'Quick Bindings'
+      Control = fontSize
+      Track = False
+      Component = sample
+      ComponentProperty = 'Font.Size'
+    end
+    object LinkFillControlToPropertyText2: TLinkFillControlToProperty
+      Category = 'Quick Bindings'
+      Track = True
+      Control = fontSizeList
+      Component = fontSize
+      ComponentProperty = 'Value'
+      AutoFill = True
+      FillExpressions = <>
+      InitializeControlValue = False
+      FillHeaderExpressions = <>
+      FillBreakGroups = <>
+    end
+  end
+end

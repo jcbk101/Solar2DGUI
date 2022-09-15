@@ -1,0 +1,78 @@
+{
+    "device": [
+        {
+            "WINDOW": {
+                "name": "RECT1",
+                "width": 286,
+                "height": 204,
+                "x": 259.955963134766,
+                "y": 170.255294799805,
+                "scaleX": 1.00486731529236,
+                "scaleY": 1.00486731529236,
+                "anchorX": 0.75,
+                "anchorY": 0.75,
+                "rotation": 0,
+                "alpha": 1,
+                "color": 0,
+                "9Patch": "C:\\Solar2D\\BCBProjects\\fmxSolar2DGUI\\9-Patch\\button_round_panel_orange.9.png",
+                "UI": {
+                    "zPosition": 0,
+                    "pAlignLeft": false,
+                    "pAlignTop": false,
+                    "pAlignRight": false,
+                    "pAlignBottom": false,
+                    "pAlignVert": false,
+                    "pAlignHori": false,
+                    "pAnchorLeft": false,
+                    "pAnchorTop": false,
+                    "pAnchorRight": false,
+                    "pAnchorBottom": false,
+                    "visible": true,
+                    "alignAbove": "",
+                    "alignBottomWith": "",
+                    "alignHoriWith": "",
+                    "alignLeftWith": "",
+                    "alignRightWith": "",
+                    "alignTopWith": "",
+                    "alignVertWith": "",
+                    "alignBelow": "",
+                    "alignLeftOf": "",
+                    "alignRightOf": ""
+                },
+                "animations": [
+                    {
+                        "name": "",
+                        "time": 10000,
+                        "delay": 0,
+                        "iterations": 1,
+                        "transition": 1,
+                        "easeType": 1,
+                        "interpolation": 8,
+                        "tag": "",
+                        "delta": false,
+                        "loop": false,
+                        "x-Enabled": false,
+                        "y-Enabled": false,
+                        "width-Enabled": false,
+                        "height-Enabled": false,
+                        "rotation-Enabled": false,
+                        "xScale-Enabled": true,
+                        "yScale-Enabled": true,
+                        "alpha-Enabled": false,
+                        "fontSize-Enabled": false,
+                        "x": -286,
+                        "y": 0,
+                        "width": 0,
+                        "height": 0,
+                        "rotation": 0,
+                        "xScale": 0.0500000007450581,
+                        "yScale": 0.0500000007450581,
+                        "alpha": 0,
+                        "fontSize": 0
+                    }
+                ],
+                "children": []
+            }
+        }
+    ]
+}

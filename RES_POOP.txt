@@ -1,0 +1,26 @@
+For those who use C++ Builder this code works for me :
+
+In the ResourceTest.rc file
+
+IMG_BMP BITMAP "Ressources\\myimage.bmp";
+IMG_PNG RCDATA "Ressources\\myimage.png";
+In the ResourceTest.rh file
+
+#ifndef ResourceTestRH
+#define ResourceTestRH
+
+#define IMG_BMP "IMG_BMP"
+#define IMG_PNG "IMG_PNG"
+
+#endif
+In the ResourceTest.cpp file
+
+#include "pngimage.hpp"
+
+// Loading bmp image from resource
+Graphics::TBitmap *bmpImage = new Graphics::TBitmap();
+bmpImage->LoadFromResourceName((int)HInstance, IMG_BMP);
+
+// Loading png image from resource
+TPngImage *pngImage = new TPngImage();
+pngImage->LoadFromResourceName((int)HInstance, IMG_PNG);

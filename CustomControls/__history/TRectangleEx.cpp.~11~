@@ -1,0 +1,19 @@
+//---------------------------------------------------------------------------
+
+#pragma hdrstop
+
+#include "TRectangleEx.h"
+
+#pragma package(smart_init)
+
+
+//__fastcall TRectangleEx::TRectangleEx(TComponent* Owner)
+//{
+//this->animations = new TList();
+//}
+
+
+__fastcall TRectangleEx::~TRectangleEx()
+{
+	delete this->animations;
+}

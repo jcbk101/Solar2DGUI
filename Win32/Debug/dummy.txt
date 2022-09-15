@@ -1,0 +1,50 @@
+{
+ "device": [
+  {
+   "background": "C:\\Solar2D\\Projects\\poopy\\assets\\bg.png"
+  },
+  {
+   "WINDOW": {
+    "name": "R0",
+    "width": 372,
+    "height": 366,
+    "x": 480,
+    "y": 201.66667175293,
+    "scaleX": 1,
+    "scaleY": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.5,
+    "rotation": 0,
+    "alpha": 1,
+    "color": 4293982463,
+    "imageType": -1,
+    "imageIndex": -1,
+    "imageFile": "",
+    "UI": {
+     "zPosition": 0,
+     "pAlignLeft": false,
+     "pAlignTop": false,
+     "pAlignRight": false,
+     "pAlignBottom": false,
+     "pAlignVert": false,
+     "pAlignHori": false,
+     "pAnchorLeft": false,
+     "pAnchorTop": false,
+     "pAnchorRight": false,
+     "pAnchorBottom": false,
+     "visible": true,
+     "alignAbove": "",
+     "alignBottomWith": "",
+     "alignHoriWith": "",
+     "alignLeftWith": "",
+     "alignRightWith": "",
+     "alignTopWith": "",
+     "alignVertWith": "",
+     "alignBelow": "",
+     "alignLeftOf": "",
+     "alignRightOf": ""
+    }
+   }
+  }
+ ]
+}

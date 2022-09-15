@@ -1,0 +1,91 @@
+{
+    "device": [
+        {
+            "WINDOW": {
+                "name": "RECT0",
+                "width": 512,
+                "height": 512,
+                "x": 704,
+                "y": 284,
+                "scaleX": 1,
+                "scaleY": 1,
+                "anchorX": 0.5,
+                "anchorY": 0.5,
+                "rotation": 0,
+                "alpha": 1,
+                "color": 4294901760,
+                "9Patch": "",
+                "UI": {
+                    "zPosition": 0,
+                    "pAlignLeft": false,
+                    "pAlignTop": false,
+                    "pAlignRight": false,
+                    "pAlignBottom": false,
+                    "pAlignVert": true,
+                    "pAlignHori": true,
+                    "pAnchorLeft": false,
+                    "pAnchorTop": false,
+                    "pAnchorRight": false,
+                    "pAnchorBottom": false,
+                    "visible": true,
+                    "alignAbove": "",
+                    "alignBottomWith": "",
+                    "alignHoriWith": "",
+                    "alignLeftWith": "",
+                    "alignRightWith": "",
+                    "alignTopWith": "",
+                    "alignVertWith": "",
+                    "alignBelow": "",
+                    "alignLeftOf": "",
+                    "alignRightOf": ""
+                },
+                "animations": []
+            }
+        },
+        {
+            "TEXT": {
+                "name": "TEXT1",
+                "width": 421.51171875,
+                "height": 95.765625,
+                "x": 749.244140625,
+                "y": 284,
+                "scaleX": 1,
+                "scaleY": 1,
+                "anchorX": 0.5,
+                "anchorY": 0.5,
+                "rotation": 0,
+                "alpha": 1,
+                "text": "Hello World!",
+                "font": "Segoe UI",
+                "fontColor": 4278255615,
+                "fontSize": 72,
+                "UI": {
+                    "zPosition": 1,
+                    "pAlignLeft": false,
+                    "pAlignTop": false,
+                    "pAlignRight": false,
+                    "pAlignBottom": false,
+                    "pAlignVert": false,
+                    "pAlignHori": true,
+                    "pAnchorLeft": false,
+                    "pAnchorTop": false,
+                    "pAnchorRight": false,
+                    "pAnchorBottom": false,
+                    "visible": true,
+                    "alignAbove": "",
+                    "alignBottomWith": "",
+                    "alignHoriWith": "",
+                    "alignLeftWith": "",
+                    "alignRightWith": "",
+                    "alignTopWith": "RECT0",
+                    "alignVertWith": "",
+                    "alignBelow": "",
+                    "alignLeftOf": "",
+                    "alignRightOf": "",
+                    "textAlignment": 0
+                },
+                "animations": []
+            }
+        }
+    ]
+}

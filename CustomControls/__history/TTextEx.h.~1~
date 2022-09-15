@@ -1,0 +1,101 @@
+//---------------------------------------------------------------------------
+
+#ifndef TRectangleExH
+#define TRectangleExH
+
+#include <System.Classes.hpp>
+#include <FMX.Controls.hpp>
+#include <FMX.Objects.hpp>
+#include <FMX.Forms.hpp>
+#include <System.UITypes.hpp>
+
+
+//--------------------------------------
+//
+//Extend TRectangle to support 9-Patch
+//
+//--------------------------------------
+class TRectangleEx: public TRectangle
+{
+
+
+public:
+	//overload
+	TRectangleEx(TControl* AOwner): TRectangle(AOwner)
+	{
+	}
+
+
+public:
+	//Setters
+	void setScaleX(float X)
+	{
+		Scale->X = X;
+	}
+
+
+	void setScaleY(float Y)
+	{
+		Scale->Y = Y;
+	}
+
+
+	void setRotationAngle(float Angle)
+	{
+		RotationAngle = Angle;
+	}
+
+
+	void setRotationCenterX(float X)
+	{
+		RotationCenter->X = X;
+	}
+
+
+	void setRotationCenterY(float Y)
+	{
+		RotationCenter->Y = Y;
+	}
+
+
+	//Getters
+	float getScaleX()
+	{
+		return Scale->X;
+	}
+
+
+	float getScaleY()
+	{
+		return Scale->Y;
+	}
+
+
+	float getRotationAngle()
+	{
+		return RotationAngle;
+	}
+
+
+	float getRotationCenterX()
+	{
+		return RotationCenter->X;
+	}
+
+
+	float getRotationCenterY()
+	{
+		return RotationCenter->Y;
+	}
+
+	//These values hold the copied image data offsets
+	//for each loaded 9-Patch file.
+	TRect TL, TC, TR;
+	TRect L, C, R;
+	TRect BL, BC, BR;
+
+	TAlphaColor oldColor;
+};
+
+
+#endif
