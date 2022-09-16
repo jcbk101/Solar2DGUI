@@ -285,7 +285,7 @@ object solar2DForm: Tsolar2DForm
               object deviceScreen: TRectangle
                 ClipChildren = True
                 EnableDragHighlight = False
-                Fill.Color = claCrimson
+                Fill.Color = claBlack
                 PopupMenu = devicePopup
                 Position.X = 88.000000000000000000
                 Position.Y = 80.000000000000000000
@@ -3349,8 +3349,6 @@ object solar2DForm: Tsolar2DForm
           object codeMemo: TMemo
             Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
             DataDetectorTypes = []
-            Lines.Strings = (
-              'This is test code')
             ReadOnly = True
             StyledSettings = []
             TextSettings.Font.Family = 'Courier New'
