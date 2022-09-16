@@ -18,22 +18,16 @@
 //---------------------------------------------------------------------------
 USEFORM("FontForm.cpp", Form1);
 USEFORM("MessageBox.cpp", msgForm);
+USEFORM("TexAtlas\TexAtlas.cpp", texAtlasForm);
 USEFORM("ControlsForm.cpp", solar2DForm);
 USEFORM("AboutForm.cpp", frmAbout);
-USEFORM("TexAtlas\TexAtlas.cpp", texAtlasForm);
-
-
 //---------------------------------------------------------------------------
 extern "C" int FMXmain()
 {
 	try
 	{
 		Application->Initialize();
-		Application->CreateForm(__classid(Tsolar2DForm), & solar2DForm);
-//		Application->CreateForm(__classid(TtexAtlasForm), & texAtlasForm);
-		//Application->RegisterFormFamily(L"TForm3", OPENARRAY(TComponentClass,(__classid(Tsolar2DForm))));
-		//Application->RegisterFormFamily(L"TForm2", OPENARRAY(TComponentClass,(__classid(Tsolar2DForm), __classid(TmsgForm))));
-		//Application->RegisterFormFamily(L"TForm", OPENARRAY(TComponentClass,(__classid(Tsolar2DForm), __classid(TfrmAbout))));
+		Application->CreateForm(__classid(Tsolar2DForm), &solar2DForm);
 		Application->Run();
 	}
 	catch (Exception& exception)

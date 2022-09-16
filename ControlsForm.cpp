@@ -63,6 +63,12 @@ __fastcall Tsolar2DForm::Tsolar2DForm(TComponent *Owner)
 	mc = __classid(TRectangleEx);
 	RegisterClasses(&mc, 0);
 
+	mc = __classid(TTextEx);
+	RegisterClasses(&mc, 0);
+
+	//mc = __classid(TControlEx);
+	//RegisterClasses(&mc, 0);
+
 	//These functions reside in 'LUADisplay\LUADisplay.h &.cpp'
 	initFunctionCalls();
 
@@ -2727,12 +2733,12 @@ void __fastcall Tsolar2DForm::objectNumChange(TObject *Sender)
 
 		for (int i = 0; i < temp->Count; i++)
 		{
-			TControl *d = (TControl *)temp->Items[i];
+			TTextEx *c = static_cast<TTextEx *>(temp->Items[i]);
 
 			//Editing a control's values
-			if (d)
+			if (c)
 			{
-				TControlEx *c = (TControlEx *)d;
+				//TRectangleEx *c = (TRectangleEx *)d;
 				switch(nb->Tag)
 				{
 				case 0:
@@ -2748,19 +2754,19 @@ void __fastcall Tsolar2DForm::objectNumChange(TObject *Sender)
 					c->Position->Y = nb->Value;
 					break;
 				case 4:
-					c->setScaleX(nb->Value);
+					c->Scale->X = nb->Value;
 					break;
 				case 5:
-					c->setScaleY(nb->Value);
+					c->Scale->Y = nb->Value;
 					break;
 				case 6:
-					c->setRotationCenterX(nb->Value);
+					c->RotationCenter->X =nb->Value;
 					break;
 				case 7:
-					c->setRotationCenterY(nb->Value);
+					c->RotationCenter->Y = nb->Value;
 					break;
 				case 8:
-					c->setRotationAngle(nb->Value);
+					c->RotationAngle = nb->Value;
 					break;
 				case 9:
 					c->Opacity = nb->Value;
@@ -3194,6 +3200,12 @@ void __fastcall Tsolar2DForm::calculate9PatchOffsets(TRectangleEx *c, int topX, 
 //--------------------------------------------------------
 void __fastcall Tsolar2DForm::load9PatchImage(TRectangleEx *c, AnsiString fileName)
 {
+	if (fileName != "" && !FileExists(fileName))
+	{
+		ShowMessage("Image Load Error: '" + fileName + "' was not found.");
+		return;
+	}
+
 	if (c && fileName != "")
 	{
 		c->Fill->Bitmap->Bitmap->LoadFromFile(fileName);
@@ -5727,7 +5739,7 @@ void __fastcall Tsolar2DForm::runAnimationClick(TObject *Sender)
 	{
 		UIAnimation *o    = NULL;
 		TList *      temp = NULL;
-		TControlEx * c    = (TControlEx *)objects->Items[i];
+		TControl *   c    = (TControl *)objects->Items[i];
 
 		if (c->ClassType() == __classid(TTextEx))
 		{
@@ -5864,7 +5876,7 @@ TFloatAnimation *__fastcall Tsolar2DForm::buildFloatAnimation(TFmxObject *Sender
 	bool             transitionType = (animation->transition == 1);
 	float            start          = 0;
 	float            end            = 0;
-	TControlEx *     c              = (TControlEx *)Sender;
+	TTextEx *        c              = static_cast<TTextEx *>(Sender);
 
 	if (c)
 	{
@@ -5900,9 +5912,9 @@ TFloatAnimation *__fastcall Tsolar2DForm::buildFloatAnimation(TFmxObject *Sender
 			c->Position->Y,
 			c->Width,
 			c->Height,
-			c->getRotationAngle(),
-			c->getScaleX(),
-			c->getScaleY(),
+			c->RotationAngle,
+			c->Scale->X,
+			c->Scale->Y,
 			c->Opacity,
 			fontSize
 		};

@@ -77,7 +77,7 @@
 
 #include "CustomControls\TRectangleEx.h"
 #include "CustomControls\TTextEx.h"
-#include "CustomControls\TControlEx.h"
+//#include "CustomControls\TControlEx.h"
 
 #include "CodeView\CodeView.h"
 #include "TexAtlas\TexAtlas.h"
