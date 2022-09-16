@@ -7,7 +7,7 @@
 
 #include "CustomControls\TRectangleEx.h"
 #include "CustomControls\TTextEx.h"
-#include "CustomControls\TControlEx.h"
+//#include "CustomControls\TControlEx.h"
 #include "TexAtlas\TexAtlas.h"
 #include "UIAnimation.h"
 
@@ -22,7 +22,7 @@ private:
 	void __fastcall writeNewImageRect(TRectangleEx *window, AnsiString groupName, AnsiString indent);
 	void __fastcall writeNewImageSheetRect(TRectangleEx *window, AnsiString groupName, AnsiString sheetName, int sheetIndex, AnsiString indent);
 	void __fastcall writeNewText(TTextEx *text, AnsiString groupName, AnsiString indent);
-	void __fastcall writeAnchors(TControlEx *Control, AnsiString indent);
+	void __fastcall writeAnchors(TObject *Control, AnsiString indent);
 	void __fastcall writeAnimation(TControl *Control, AnsiString target, AnsiString indent);
 
 

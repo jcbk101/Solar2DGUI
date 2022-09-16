@@ -46,6 +46,8 @@ AnsiString __fastcall UICodeView::buildSourceCode(TRectangle *Parent, AnsiString
 				{
 					//Build for text object
 					writeNewText((TTextEx *)object, groupName,"\t");
+					//Anchor code
+					writeAnchors(object, "\t");
 				}
 			}
 		}
@@ -288,10 +290,10 @@ void __fastcall UICodeView::buildWindowCode(TRectangleEx *window, AnsiString gro
 
 		//-----------------------------------------------------------
 		//
-		//Anchor String: Only print if anchors are NOT".5 and .5"
+		//Anchor String: Only print if anchors are NOT ".5 and .5"
 		//
 		//-----------------------------------------------------------
-		writeAnchors((TControlEx *)window, indent);
+		writeAnchors(window, indent);
 
 		//Check for recursive build
 		if (window->ChildrenCount)
@@ -330,6 +332,8 @@ void __fastcall UICodeView::buildWindowCode(TRectangleEx *window, AnsiString gro
 						c->Position->Y += window->Position->Y;
 						//
 						writeNewText((TTextEx *)c, groupName, indent +"\t");
+						//Anchor code
+						writeAnchors(c, indent + "\t");
 						//
 						c->Position->X = x;
 						c->Position->Y = y;
@@ -556,25 +560,29 @@ void __fastcall UICodeView::writeNewText(TTextEx *text, AnsiString groupName, An
 }
 
 
-void __fastcall UICodeView::writeAnchors(TControlEx *Control, AnsiString indent)
+void __fastcall UICodeView::writeAnchors(TObject *Control, AnsiString indent)
 {
 	char buffer[1024];
+	TTextEx *c = static_cast<TTextEx *>(Control);
 	//
 	//Anchor String: Only print if anchors are NOT".5 and .5"
 	//
-	if (Control->getRotationCenterX() != 0.5 || Control->getRotationCenterY() != 0.5)
+	if (c)
 	{
-		sprintf(buffer,
-			"%s.anchorX, %s.anchorY = %.2f, %.2f \n \n",
-			AnsiString(Control->Name).c_str(), AnsiString(Control->Name).c_str(),
-			Control->getRotationCenterX(), Control->getRotationCenterY()
-			);
+		if (c->RotationCenter->X != 0.5 || c->RotationCenter->Y != 0.5)
+		{
+			sprintf(buffer,
+				"%s.anchorX, %s.anchorY = %.2f, %.2f \n \n",
+				AnsiString(c->Name).c_str(), AnsiString(c->Name).c_str(),
+				c->RotationCenter->X, c->RotationCenter->Y
+				);
 
-		this->codeString = this->codeString + indent + AnsiString(buffer);
-	}
-	else
-	{
-		this->codeString = this->codeString +"\n";
+			this->codeString = this->codeString + indent + AnsiString(buffer);
+		}
+		else
+		{
+			this->codeString = this->codeString +"\n";
+		}
 	}
 }
 
