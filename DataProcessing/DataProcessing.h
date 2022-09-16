@@ -12,7 +12,7 @@
 
 #include "CustomControls\TRectangleEx.h"
 #include "CustomControls\TTextEx.h"
-#include "CustomControls\TControlEx.h"
+//#include "CustomControls\TControlEx.h"
 #include "ZOrder.h"
 #include "UIAnimation.h"
 

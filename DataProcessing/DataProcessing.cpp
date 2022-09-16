@@ -108,7 +108,7 @@ void __fastcall processJsonWrite(TControl *DeviceParent, TJsonTextWriter *writer
 //--------------------------------------------------------
 void __fastcall jsonWriteWindowObject(TControl *control, TJsonTextWriter *writer)
 {
-	TControlEx *Control = (TControlEx *)control;
+	TRectangleEx *Control = dynamic_cast<TRectangleEx *>(control);
 
 	if (Control)
 	{
@@ -125,31 +125,27 @@ void __fastcall jsonWriteWindowObject(TControl *control, TJsonTextWriter *writer
 		writer->WritePropertyName("y");
 		writer->WriteValue(Control->Position->Y);
 		writer->WritePropertyName("scaleX");
-		writer->WriteValue(Control->getScaleX());
+		writer->WriteValue(Control->Scale->X);
 		writer->WritePropertyName("scaleY");
-		writer->WriteValue(Control->getScaleY());
+		writer->WriteValue(Control->Scale->Y);
 		writer->WritePropertyName("anchorX");
-		writer->WriteValue(Control->getRotationCenterX());
+		writer->WriteValue(Control->RotationCenter->X);
 		writer->WritePropertyName("anchorY");
-		writer->WriteValue(Control->getRotationCenterY());
+		writer->WriteValue(Control->RotationCenter->Y);
 		writer->WritePropertyName("rotation");
-		writer->WriteValue(Control->getRotationAngle());
+		writer->WriteValue(Control->RotationAngle);
 		writer->WritePropertyName("alpha");
 		writer->WriteValue(Control->Opacity);
 
-		TRectangleEx *ex = dynamic_cast<TRectangleEx *>(control);
-		if (ex)
-		{
-			writer->WritePropertyName("color");
-			writer->WriteValue(ex->Fill->Color);
-			//Determine image type
-			writer->WritePropertyName("imageType");
-			writer->WriteValue(ex->imageType);
-			writer->WritePropertyName("imageIndex");
-			writer->WriteValue(ex->imageIndex);
-			writer->WritePropertyName("imageFile");
-			writer->WriteValue(ex->TagString);
-		}
+		writer->WritePropertyName("color");
+		writer->WriteValue(Control->Fill->Color);
+		//Determine image type
+		writer->WritePropertyName("imageType");
+		writer->WriteValue(Control->imageType);
+		writer->WritePropertyName("imageIndex");
+		writer->WriteValue(Control->imageIndex);
+		writer->WritePropertyName("imageFile");
+		writer->WriteValue(Control->TagString);
 	}
 }
 
@@ -1044,7 +1040,6 @@ void __fastcall jsonReadObjectAnimation(TControl *Control, TJsonTextReader *read
 
 		//
 		TStringList *list = new TStringList();
-		TControlEx * c    = NULL;
 
 		list->Add("name");
 		list->Add("time");
