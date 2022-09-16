@@ -11,7 +11,6 @@
 #include "FontForm.h"
 #include "EditFeatures.h"
 #include "CustomControls\TRectangleEx.h"
-#include "CustomControls\TControlEx.h"
 #include "CustomControls\TTextEx.h"
 
 
