@@ -1,3 +1,6 @@
+> Picture of the editor in use.
+![Editor Image](Editor.png)
+
 # Solar2DGUI
  A generic Solar2D GUI designer
 
