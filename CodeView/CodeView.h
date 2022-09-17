@@ -45,6 +45,7 @@ public:
 	//The [Quote] compiled code [/Quote]
 	bool       changesMade;
 	bool       IsDisplayed;
+	bool       variableType;
 	AnsiString codeString;
 	AnsiString baseCodeStart;
 	AnsiString baseCodeEnd;
@@ -57,7 +58,7 @@ public:
 	TStringList *groups;
 
 
-	AnsiString __fastcall buildSourceCode(TRectangle *Parent, AnsiString projectName);
+	AnsiString __fastcall buildSourceCode(TRectangle *Parent, AnsiString projectName, bool useTableType);
 	void __fastcall buildWindowCode(TRectangleEx *window, AnsiString groupName, AnsiString indent);
 	void __fastcall buildTextCode(TTextEx *text, AnsiString indent);
 };

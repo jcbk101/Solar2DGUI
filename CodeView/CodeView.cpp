@@ -12,7 +12,7 @@
 //Main loop: Source builder
 //
 //--------------------------------------------------------
-AnsiString __fastcall UICodeView::buildSourceCode(TRectangle *Parent, AnsiString projectName)
+AnsiString __fastcall UICodeView::buildSourceCode(TRectangle *Parent, AnsiString projectName, bool useTableType)
 {
 	TControl *object;
 	AnsiString groupName = "";
@@ -22,6 +22,9 @@ AnsiString __fastcall UICodeView::buildSourceCode(TRectangle *Parent, AnsiString
 	imgSheet->Clear();
 	objs->Clear();
 	groups->Clear();
+
+	//Flag to determine is using 'local var' or 'M.var'
+	variableType = useTableType;
 
 	//Generate Base code
 	generateBaseCode();
@@ -60,14 +63,30 @@ AnsiString __fastcall UICodeView::buildSourceCode(TRectangle *Parent, AnsiString
 			char buffer[1024];
 			AnsiString dir = ChangeFileExt(ExtractFileName(projectName),"");
 
-			sprintf(buffer,
-				"\t-- Background image\n"
-				"\tlocal %s_BG = display.newImageRect( \"assets/%s\", display.contentWidth, display.contentHeight )\n"
-				"\t%s_BG.x, %s_BG.y = display.contentCenterX, display.contentCenterY\n\n",
-				dir.c_str(),
-				AnsiString(ExtractFileName(Parent->TagString)).c_str(),
-				dir.c_str(), dir.c_str()
-				);
+			if (!variableType)
+			{
+				sprintf(buffer,
+					"\t-- Background image\n"
+					//"\tlocal %s_BG = display.newImageRect( \"assets/%s\", display.contentWidth, display.contentHeight )\n"
+					"\tlocal %s_BG = display.newImageRect( \"assets/%s\", display.contentWidth, display.contentHeight )\n"
+					"\t%s_BG.x, %s_BG.y = display.contentCenterX, display.contentCenterY\n\n",
+					dir.c_str(),
+					AnsiString(ExtractFileName(Parent->TagString)).c_str(),
+					dir.c_str(), dir.c_str()
+					);
+			}
+			else
+			{
+				sprintf(buffer,
+					"\t-- Background image\n"
+					//"\tlocal %s_BG = display.newImageRect( \"assets/%s\", display.contentWidth, display.contentHeight )\n"
+					"\tM.%s_BG = display.newImageRect( \"assets/%s\", display.contentWidth, display.contentHeight )\n"
+					"\tM.%s_BG.x, M.%s_BG.y = display.contentCenterX, display.contentCenterY\n\n",
+					dir.c_str(),
+					AnsiString(ExtractFileName(Parent->TagString)).c_str(),
+					dir.c_str(), dir.c_str()
+					);
+			}
 
 			this->baseCodeStart = this->baseCodeStart + AnsiString(buffer);
 		}
@@ -92,8 +111,16 @@ AnsiString __fastcall UICodeView::buildSourceCode(TRectangle *Parent, AnsiString
 				file = "assets/"+ ChangeFileExt(ExtractFileName(imgSheet->Strings[i]),".png");
 				asset = ChangeFileExt(ExtractFileName(imgSheet->Strings[i]),"");
 
-				req = req + "\tlocal req_" + asset + " = require(\"" + "assets." + asset + "\")\n";
-				req = req + "\tlocal sheet_" + asset + " = graphics.newImageSheet(\"" + file + "\", req_" + asset + ":getSheet())\n \n";
+				if (!variableType)
+				{
+					req = req + "\tlocal req_" + asset + " = require(\"" + "assets." + asset + "\")\n";
+					req = req + "\tlocal sheet_" + asset + " = graphics.newImageSheet(\"" + file + "\", req_" + asset + ":getSheet())\n \n";
+				}
+				else
+				{
+					req = req + "\M.req_" + asset + " = require(\"" + "assets." + asset + "\")\n";
+					req = req + "\tM.sheet_" + asset + " = graphics.newImageSheet(\"" + file + "\", M.req_" + asset + ":getSheet())\n \n";
+				}
 			}
 
 			//Write it all out
@@ -160,11 +187,21 @@ void __fastcall UICodeView::generateCleanUpCode()
 	if (imgSheet->Count)
 	{
 		this->baseCleanCode = this->baseCleanCode + "\t\t-- Release image sheet data\n";
+
 		for (int i = 0; i < imgSheet->Count; i++)
 		{
-			this->baseCleanCode = this->baseCleanCode + "\t\treq_" + ChangeFileExt(imgSheet->Strings[i], "") + " = nil\n";
-			this->baseCleanCode = this->baseCleanCode + "\t\tsheet_" + ChangeFileExt(imgSheet->Strings[i], "") + " = nil\n\n";
+			if (!variableType)
+			{
+				this->baseCleanCode = this->baseCleanCode + "\t\treq_" + ChangeFileExt(imgSheet->Strings[i], "") + " = nil\n";
+				this->baseCleanCode = this->baseCleanCode + "\t\tsheet_" + ChangeFileExt(imgSheet->Strings[i], "") + " = nil\n\n";
+			}
+			else
+			{
+				this->baseCleanCode = this->baseCleanCode + "\t\tM.req_" + ChangeFileExt(imgSheet->Strings[i], "") + " = nil\n";
+				this->baseCleanCode = this->baseCleanCode + "\t\tM.sheet_" + ChangeFileExt(imgSheet->Strings[i], "") + " = nil\n\n";
+			}
 		}
+
 		this->baseCleanCode = this->baseCleanCode + "\n";
 	}
 
@@ -173,8 +210,16 @@ void __fastcall UICodeView::generateCleanUpCode()
 		this->baseCleanCode = this->baseCleanCode + "\t\t-- Release display objects\n";
 		for (int i = 0; i < objs->Count; i++)
 		{
-			this->baseCleanCode = this->baseCleanCode + "\t\tdisplay.remove( " + objs->Strings[i] + ")\n";
-			this->baseCleanCode = this->baseCleanCode + "\t\t" + objs->Strings[i] + " = nil \n";
+			if (!variableType)
+			{
+				this->baseCleanCode = this->baseCleanCode + "\t\tdisplay.remove( " + objs->Strings[i] + ")\n";
+				this->baseCleanCode = this->baseCleanCode + "\t\t" + objs->Strings[i] + " = nil \n";
+			}
+			else
+			{
+				this->baseCleanCode = this->baseCleanCode + "\t\tdisplay.remove( M." + objs->Strings[i] + ")\n";
+				this->baseCleanCode = this->baseCleanCode + "\t\tM." + objs->Strings[i] + " = nil \n";
+			}
 		}
 		this->baseCleanCode = this->baseCleanCode + "\n";
 	}
@@ -185,8 +230,16 @@ void __fastcall UICodeView::generateCleanUpCode()
 
 		for (int i = 0; i < groups->Count; i++)
 		{
-			this->baseCleanCode = this->baseCleanCode + "\t\tdisplay.remove(" + groups->Strings[i] + ")\n";
-			this->baseCleanCode = this->baseCleanCode + "\t\t" + groups->Strings[i] + " = nil\n";
+			if (!variableType)
+			{
+				this->baseCleanCode = this->baseCleanCode + "\t\tdisplay.remove(" + groups->Strings[i] + ")\n";
+				this->baseCleanCode = this->baseCleanCode + "\t\t" + groups->Strings[i] + " = nil\n";
+			}
+			else
+			{
+				this->baseCleanCode = this->baseCleanCode + "\t\tdisplay.remove(M." + groups->Strings[i] + ")\n";
+				this->baseCleanCode = this->baseCleanCode + "\t\tM." + groups->Strings[i] + " = nil\n";
+			}
 		}
 		this->baseCleanCode = this->baseCleanCode + "\n";
 	}
@@ -222,10 +275,18 @@ void __fastcall UICodeView::buildWindowCode(TRectangleEx *window, AnsiString gro
 				groupName = window->Name + "_group";
 				groups->Add(groupName);
 
-				this->codeString = this->codeString + indent +"local " + groupName + " = display.newGroup()\n";
-
-				//Nest this inside of the parent grop
-				this->codeString = this->codeString + indent + group + ":insert(" + groupName + ")\n";
+				if (!variableType)
+				{
+					this->codeString = this->codeString + indent +"local " + groupName + " = display.newGroup()\n";
+					//Nest this inside of the parent grop
+					this->codeString = this->codeString + indent + group + ":insert(" + groupName + ")\n";
+				}
+				else
+				{
+					this->codeString = this->codeString + indent + "M." + groupName + " = display.newGroup()\n";
+					//Nest this inside of the parent grop
+					this->codeString = this->codeString + indent + "M." + group + ":insert(M." + groupName + ")\n";
+				}
 			}
 			else
 			{
@@ -233,7 +294,10 @@ void __fastcall UICodeView::buildWindowCode(TRectangleEx *window, AnsiString gro
 				groupName = window->Name + "_group";
 				groups->Add(groupName);
 
-				this->codeString = this->codeString + indent +"local " + groupName + " = display.newGroup()\n";
+				if (!variableType)
+					this->codeString = this->codeString + indent + "local " + groupName + " = display.newGroup()\n";
+				else
+					this->codeString = this->codeString + indent + "M." + groupName + " = display.newGroup()\n";
 			}
 		}
 
@@ -346,9 +410,18 @@ void __fastcall UICodeView::buildWindowCode(TRectangleEx *window, AnsiString gro
 			//When a group is animated, positioning is important
 			//Make sure that group.anchorChildren = true
 			//Make sure that group.x/y = main Window's x/y
-			this->codeString = this->codeString + indent + groupName + ".anchorChildren = true\n";
+			if (!variableType)
+			{
+				this->codeString = this->codeString + indent + groupName + ".anchorChildren = true\n";
+				sprintf(buffer,"%s.x, %s.y = %s.x, %s.y\n\n", groupName.c_str(), groupName.c_str(), AnsiString(window->Name), AnsiString(window->Name));
+			}
+			else
+			{
+				this->codeString = this->codeString + indent + "M." + groupName + ".anchorChildren = true\n";
+				sprintf(buffer,"M.%s.x, M.%s.y = M.%s.x, M.%s.y\n\n", groupName.c_str(), groupName.c_str(), AnsiString(window->Name), AnsiString(window->Name));
+			}
 
-			sprintf(buffer,"%s.x, %s.y = %s.x, %s.y\n\n", groupName.c_str(), groupName.c_str(), AnsiString(window->Name), AnsiString(window->Name));
+
 			this->codeString = this->codeString + indent + AnsiString(buffer);
 
 			//Whenever a 'window' has children, the window's animation
@@ -391,21 +464,40 @@ void __fastcall UICodeView::writeNewRect(TRectangleEx *window, AnsiString groupN
 		group = AnsiString(groupName +", ");
 
 	//Regular 'newRect' with a color
-	sprintf(buffer,
-		"%slocal %s = display.newRect(%s%d, %d, %d, %d)\n"
-		"%s%s:setFillColor(%.2f, %.2f, %.2f, %.2f)\n",
-		AnsiString(indent).c_str(),
-		AnsiString(window->Name).c_str(),
-		AnsiString(group).c_str(),
-		x, y,
-		(int)window->Width,
-		(int)window->Height,
-		//
-		AnsiString(indent).c_str(),
-		AnsiString(window->Name).c_str(),
-		r, g, b, a
-		);
-
+	if (!variableType)
+	{
+		sprintf(buffer,
+			"%slocal %s = display.newRect(%s%d, %d, %d, %d)\n"
+			"%s%s:setFillColor(%.2f, %.2f, %.2f, %.2f)\n",
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(),
+			AnsiString(group).c_str(),
+			x, y,
+			(int)window->Width,
+			(int)window->Height,
+			//
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(),
+			r, g, b, a
+			);
+	}
+	else
+	{
+		sprintf(buffer,
+			"%sM.%s = display.newRect(M.%s%d, %d, %d, %d)\n"
+			"%sM.%s:setFillColor(%.2f, %.2f, %.2f, %.2f)\n",
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(),
+			AnsiString(group).c_str(),
+			x, y,
+			(int)window->Width,
+			(int)window->Height,
+			//
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(),
+			r, g, b, a
+			);
+	}
 	//Set up for clean up later
 	objs->Add(window->Name);
 
@@ -433,23 +525,44 @@ void __fastcall UICodeView::writeNewImageRect(TRectangleEx *window, AnsiString g
 		group = AnsiString(groupName +", ");
 
 	//Regular 'newImageRect'
-	sprintf(buffer,
-		"%slocal %s = display.newImageRect(%s \"%s \", %d, %d)\n"
-		"%s%s.x, %s.y = %d, %d \n",
-		AnsiString(indent).c_str(),
-		AnsiString(window->Name).c_str(),
-		AnsiString(group).c_str(),
+	if (!variableType)
+	{
+		sprintf(buffer,
+			"%slocal %s = display.newImageRect(%s\"%s \", %d, %d)\n"
+			"%s%s.x, %s.y = %d, %d \n",
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(),
+			AnsiString(group).c_str(),
 
-		AnsiString("assets/"+ ExtractFileName(window->TagString)).c_str(),
-		//AnsiString(window->TagString).c_str(),
+			AnsiString("assets/"+ ExtractFileName(window->TagString)).c_str(),
+			//AnsiString(window->TagString).c_str(),
 
-		(int)window->Width, (int)window->Height,
-		//
-		AnsiString(indent).c_str(),
-		AnsiString(window->Name).c_str(), AnsiString(window->Name).c_str(),
-		x, y
-		);
+			(int)window->Width, (int)window->Height,
+			//
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(), AnsiString(window->Name).c_str(),
+			x, y
+			);
+	}
+	else
+	{
+		sprintf(buffer,
+			"%sM.%s = display.newImageRect(M.%s\"%s \", %d, %d)\n"
+			"%sM.%s.x, M.%s.y = %d, %d \n",
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(),
+			AnsiString(group).c_str(),
 
+			AnsiString("assets/"+ ExtractFileName(window->TagString)).c_str(),
+			//AnsiString(window->TagString).c_str(),
+
+			(int)window->Width, (int)window->Height,
+			//
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(), AnsiString(window->Name).c_str(),
+			x, y
+			);
+	}
 	//Set up for clean up later
 	objs->Add(window->Name);
 
@@ -472,20 +585,38 @@ void __fastcall UICodeView::writeNewImageSheetRect(TRectangleEx *window, AnsiStr
 		group = AnsiString(groupName +", ");
 
 	//Regular 'newImageRect' using an image sheet index
-	sprintf(buffer,
-		"%slocal %s = display.newImageRect(%s%s, %d, %d, %d)\n"
-		"%s%s.x, %s.y = %d, %d \n",
-		AnsiString(indent).c_str(),
-		AnsiString(window->Name).c_str(),
-		AnsiString(group).c_str(),
-		AnsiString(sheetName).c_str(), sheetIndex,
-		(int)window->Width, (int)window->Height,
-		//
-		AnsiString(indent).c_str(),
-		AnsiString(window->Name).c_str(), AnsiString(window->Name).c_str(),
-		x, y
-		);
-
+	if (!variableType)
+	{
+		sprintf(buffer,
+			"%slocal %s = display.newImageRect(%s%s, %d, %d, %d)\n"
+			"%s%s.x, %s.y = %d, %d \n",
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(),
+			AnsiString(group).c_str(),
+			AnsiString(sheetName).c_str(), sheetIndex,
+			(int)window->Width, (int)window->Height,
+			//
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(), AnsiString(window->Name).c_str(),
+			x, y
+			);
+	}
+	else
+	{
+		sprintf(buffer,
+			"%sM.%s = display.newImageRect(M.%s%s, %d, %d, %d)\n"
+			"%sM.%s.x, M.%s.y = %d, %d \n",
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(),
+			AnsiString(group).c_str(),
+			AnsiString(sheetName).c_str(), sheetIndex,
+			(int)window->Width, (int)window->Height,
+			//
+			AnsiString(indent).c_str(),
+			AnsiString(window->Name).c_str(), AnsiString(window->Name).c_str(),
+			x, y
+			);
+	}
 	//Set up for clean up later
 	objs->Add(window->Name);
 
@@ -508,7 +639,7 @@ void __fastcall UICodeView::writeNewText(TTextEx *text, AnsiString groupName, An
 	AnsiString buffer  = "";
 	AnsiString options = "";
 	AnsiString align[] =
-	{
+{
 		"center",
 		"left",
 		"right"
@@ -528,10 +659,19 @@ void __fastcall UICodeView::writeNewText(TTextEx *text, AnsiString groupName, An
 
 	//Regular 'newText'
 	//buffer = indent + "local " + text->Name + " = display.newText( " + group + text->Name + "_options )\n";
-	buffer = indent + "local " + text->Name + " = display.newText( " + text->Name + "_options )\n";
-	//
-	options = "\n" + indent + "-- Text data\n";
-	options = options + indent + "local " + text->Name + "_options = {\n";
+	if (!variableType)
+	{
+		buffer = indent + "local " + text->Name + " = display.newText( " + text->Name + "_options )\n";
+		options = "\n" + indent + "-- Text data\n";
+		options = options + indent + "local " + text->Name + "_options = {\n";
+	}
+	else
+	{
+		buffer = indent + "M." + text->Name + " = display.newText( M." + text->Name + "_options )\n";
+		options = "\n" + indent + "-- Text data\n";
+		options = options + indent + "M." + text->Name + "_options = {\n";
+	}
+
 	options = options + indent + "\ttext = \"" + text->Text + "\",\n";
 	options = options + indent + "\tx = " + IntToStr(x) + ",\n";
 	options = options + indent + "\ty = " + IntToStr(y) + ",\n";
@@ -541,12 +681,24 @@ void __fastcall UICodeView::writeNewText(TTextEx *text, AnsiString groupName, An
 	options = options + indent + "\talign = \"" + align[text->HorzTextAlign] + "\"\n";
 	options = options + indent + "}\n";
 
-	sprintf(numbers,
-		"%s:setFillColor(%.2f, %.2f, %.2f, %.2f)\n",
-		AnsiString(text->Name).c_str(),
-		r, g, b, a
-		);
-
+	if (!variableType)
+	{
+		sprintf(numbers,
+			"%s:setFillColor(%.2f, %.2f, %.2f, %.2f)\n",
+			AnsiString(text->Name)
+			.c_str(),
+			r, g, b, a
+			);
+	}
+	else
+	{
+		sprintf(numbers,
+			"M.%s:setFillColor(%.2f, %.2f, %.2f, %.2f)\n",
+			AnsiString(text->Name)
+			.c_str(),
+			r, g, b, a
+			);
+	}
 	//Set up for clean up later
 	objs->Add(text->Name);
 
@@ -554,7 +706,12 @@ void __fastcall UICodeView::writeNewText(TTextEx *text, AnsiString groupName, An
 	this->codeString = this->codeString + options + buffer + indent + AnsiString(numbers);
 
 	if (group != "")
-		this->codeString = this->codeString + indent + groupName + ":insert(" + text->Name + ")\n\n";
+	{
+		if (!variableType)
+			this->codeString = this->codeString + indent + groupName + ":insert(" + text->Name + ")\n\n";
+		else
+			this->codeString = this->codeString + indent + "M." + groupName + ":insert(M." + text->Name + ")\n\n";
+	}
 	else
 		this->codeString = this->codeString + "\n";
 }
@@ -571,11 +728,23 @@ void __fastcall UICodeView::writeAnchors(TObject *Control, AnsiString indent)
 	{
 		if (c->RotationCenter->X != 0.5 || c->RotationCenter->Y != 0.5)
 		{
-			sprintf(buffer,
-				"%s.anchorX, %s.anchorY = %.2f, %.2f \n \n",
-				AnsiString(c->Name).c_str(), AnsiString(c->Name).c_str(),
-				c->RotationCenter->X, c->RotationCenter->Y
-				);
+			if (!variableType)
+			{
+				sprintf(buffer,
+					"%s.anchorX, %s.anchorY = %.2f, %.2f \n \n",
+					AnsiString(c->Name).c_str(), AnsiString(c->Name).c_str(),
+					c->RotationCenter->X, c->RotationCenter->Y
+					);
+
+			}
+			else
+			{
+				sprintf(buffer,
+					"M.%s.anchorX, M.%s.anchorY = %.2f, %.2f \n \n",
+					AnsiString(c->Name).c_str(), AnsiString(c->Name).c_str(),
+					c->RotationCenter->X, c->RotationCenter->Y
+					);
+			}
 
 			this->codeString = this->codeString + indent + AnsiString(buffer);
 		}
@@ -701,7 +870,12 @@ void __fastcall UICodeView::writeAnimation(TControl *Control, AnsiString target,
 
 					bool transitionType = (anim->transition == 1);
 
-					animation = toFrom[anim->transition] + "( " + target + ", { ";
+					if (!variableType)
+						animation = toFrom[anim->transition] + "( " + target + ", { ";
+					else
+						animation = toFrom[anim->transition] + "( M." + target + ", { ";
+
+					//
 					animation = animation + "time = " + anim->time + ", ";
 					animation = animation + "delay = " + anim->delay + ", ";
 					//animation = animation + "transition = " + interpolation[anim->interpolation] + ", ";
