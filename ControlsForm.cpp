@@ -14,7 +14,6 @@
 
 #include "ControlsForm.h"
 
-//look at Barf.gua, centering horizontally cause "Invalid pointer" error after failed message box closed
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.fmx"
