@@ -14,6 +14,7 @@
 
 #include "ControlsForm.h"
 
+//look at Barf.gua, centering horizontally cause "Invalid pointer" error after failed message box closed
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.fmx"
@@ -450,6 +451,10 @@ void __fastcall Tsolar2DForm::FormKeyDown(TObject *Sender, WORD &Key, System::Wi
 	//Delete objects
 	if (Key == VK_DELETE)
 	{
+		//Do nothing if animations are running
+		if (isAnimating)
+			return;
+
 		if (selectionRect->TagObject || selectionsList->Count)
 		{
 			TSpeedButton *sb = new TSpeedButton(solar2DForm);
@@ -536,6 +541,7 @@ void __fastcall Tsolar2DForm::saveSettingsClick(TObject *Sender)
 		ini->WriteInteger("Main Window", "Width", Width);
 		ini->WriteInteger("Main Window", "Height", Height);
 		ini->WriteInteger("Main Window", "WindowState", WindowState);
+		ini->WriteInteger("Main Window", "UseTable", expTable->IsChecked);
 
 		//Device Screen
 		if (deviceScreen->TagString != "" && FileExists(deviceScreen->TagString))
@@ -577,6 +583,7 @@ void __fastcall Tsolar2DForm::reloadSettingsClick(TObject *Sender)
 		Width = ini->ReadInteger("Main Window", "Width", 800);
 		Height = ini->ReadInteger("Main Window", "Height",600);
 		WindowState = ini->ReadInteger("Main Window", "WindowState", TWindowState::wsNormal);
+		expTable->IsChecked = ini->ReadBool("Main Window", "UseTable", false);
 
 		//
 		if (WindowState == TWindowState::wsMaximized)
@@ -4988,6 +4995,9 @@ void __fastcall Tsolar2DForm::openProjClick(TObject *Sender)
 	FOpen->FilterIndex = 0;
 	FOpen->Filter = "Solar2D GUI Project Files(*.gua)|*.gua";
 
+	if (projectName != "")
+		FOpen->InitialDir = ExtractFilePath(projectName);
+
 	if (FOpen->Execute())
 	{
 		//Kill everything on deviceScreen currently
@@ -6233,7 +6243,7 @@ void __fastcall Tsolar2DForm::codeTabItemClick(TObject *Sender)
 		//if (!codeView->IsDisplayed || (codeView->IsDisplayed && codeMemo->FontColor == claRed && !isModified))
 	{
 		//Time to update code to reflect what has changed
-		AnsiString text = codeView->buildSourceCode(deviceScreen, projectName);
+		AnsiString text = codeView->buildSourceCode(deviceScreen, projectName, expTable->IsChecked);
 
 		if (text != "")
 		{
@@ -6261,6 +6271,19 @@ void __fastcall Tsolar2DForm::codeTabItemClick(TObject *Sender)
 }
 
 
+void __fastcall Tsolar2DForm::expLocalClick(TObject *Sender)
+{
+	TMenuItem *m = dynamic_cast<TMenuItem *>(Sender);
+
+	//Need to know which version to save
+	if (m && !m->IsChecked)
+	{
+		m->IsChecked = true;
+		codeTabItemClick(NULL);
+	}
+}
+
+
 //--------------------------------------------------------
 //
 //Create a folder, create 'assets' folder inside
@@ -6271,8 +6294,9 @@ void __fastcall Tsolar2DForm::codeTabItemClick(TObject *Sender)
 //--------------------------------------------------------
 void __fastcall Tsolar2DForm::exportLuaClick(TObject *Sender)
 {
-	String Dir;
-	TList *temp = new TList();
+	String  Dir      = "";
+	String  startDir = "";
+	TList * temp     = new TList();
 
 	if (isModified || projectName == "")
 	{
@@ -6295,8 +6319,13 @@ void __fastcall Tsolar2DForm::exportLuaClick(TObject *Sender)
 	if (exportDir != "")
 		Dir = exportDir;
 
+	if (projectName != "" && Dir == "")
+		startDir = ExtractFilePath(projectName);
+	else
+		startDir = exePath;
+
 	//
-	if (projectName != "" && (exportDir != "" || SelectDirectory("Select or Create a project folder...", exePath, Dir)))
+	if (projectName != "" && (exportDir != "" || SelectDirectory("Select or Create a project folder...", startDir, Dir)))
 	{
 		exportDir = AnsiString(Dir);
 
@@ -6333,7 +6362,8 @@ void __fastcall Tsolar2DForm::exportLuaClick(TObject *Sender)
 					AnsiString dest = exportDir + "\\assets\\" + ExtractFileName(c->TagString);
 
 					//Don't try and copy the file already in use
-					if (dest.AnsiCompareIC(c->TagString) != 0)
+					//Also leave any files that use 'assets' as the asset directory already
+					if (UpperCase(dest).Pos(UpperCase(exportDir + "\\assets\\")) == 0 && dest.AnsiCompareIC(c->TagString) != 0)
 					{
 						TFile::Copy(c->TagString, dest, true);
 
@@ -6354,6 +6384,7 @@ void __fastcall Tsolar2DForm::exportLuaClick(TObject *Sender)
 
 		//Create the source file to use in Solar2D
 		codeTabItemClick(NULL);
+
 		Dir = exportDir + "\\" + ChangeFileExt(ExtractFileName(projectName), ".lua");
 		codeMemo->Lines->SaveToFile(Dir);
 
