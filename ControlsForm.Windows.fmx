@@ -302,10 +302,15 @@ inherited solar2DForm_Windows: Tsolar2DForm_Windows
     Top = 129
   end
   inherited MainMenu1: TMainMenu
-    Left = 734
-    Top = 137
+    Left = 750
+    Top = 113
     inherited fileMenu: TMenuItem
       ShortCut = 16452
+    end
+    inherited toolsMenu: TMenuItem
+      inherited exportLua: TMenuItem
+        Text = 'Export to LUA source'
+      end
     end
   end
   inherited devicePopup: TPopupMenu

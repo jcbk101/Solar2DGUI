@@ -367,8 +367,8 @@ object solar2DForm: Tsolar2DForm
                   Size.Height = 589.000000000000000000
                   Size.PlatformDefault = False
                   TabOrder = 1
-                  Viewport.Width = 282.000000000000000000
-                  Viewport.Height = 585.000000000000000000
+                  Viewport.Width = 286.000000000000000000
+                  Viewport.Height = 589.000000000000000000
                   object propsSizedPanel: TPanel
                     Align = Top
                     Size.Width = 282.000000000000000000
@@ -3358,8 +3358,8 @@ object solar2DForm: Tsolar2DForm
             Size.Height = 618.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
-            Viewport.Width = 1078.000000000000000000
-            Viewport.Height = 614.000000000000000000
+            Viewport.Width = 1082.000000000000000000
+            Viewport.Height = 618.000000000000000000
           end
         end
       end
@@ -4880,6 +4880,7 @@ object solar2DForm: Tsolar2DForm
       Text = '&File'
       object newProj: TMenuItem
         Locked = True
+        ShortCut = 16462
         Text = '&New Project'
         OnClick = newProjClick
       end
@@ -4911,12 +4912,14 @@ object solar2DForm: Tsolar2DForm
       end
       object saveSettings: TMenuItem
         Locked = True
-        Text = 'Save Settings'
+        ShortCut = 16470
+        Text = 'Sa&ve Settings'
         OnClick = saveSettingsClick
       end
       object reloadSettings: TMenuItem
         Locked = True
-        Text = 'Reload Settings'
+        ShortCut = 16466
+        Text = '&Reload Settings'
         OnClick = reloadSettingsClick
       end
       object MenuItem5: TMenuItem
@@ -5463,10 +5466,30 @@ object solar2DForm: Tsolar2DForm
     end
     object toolsMenu: TMenuItem
       Text = '&Tools'
+      object expLocal: TMenuItem
+        Tag = 1
+        Locked = True
+        GroupIndex = 4
+        RadioItem = True
+        IsChecked = True
+        Text = 'Export LUA source using LOCAL variables'
+        OnClick = expLocalClick
+      end
+      object expTable: TMenuItem
+        Locked = True
+        GroupIndex = 4
+        RadioItem = True
+        Text = 'Export LUA source using TABLE variables'
+        OnClick = expLocalClick
+      end
+      object MenuItem10: TMenuItem
+        Locked = True
+        Text = '-'
+      end
       object exportLua: TMenuItem
         Locked = True
         ShortCut = 16464
-        Text = 'Export to LUA source structure'
+        Text = 'Export to LUA source {Local variables)'
         OnClick = exportLuaClick
       end
     end
