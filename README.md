@@ -28,7 +28,7 @@ chosen project directory. If the files already exist in said directory, then the
 If you are willing to improve Solar2DGUI by contributing code, by all means, fork this repository and create a pull request with any desired improvements.
 
 # Creator
-Solar2DGUI is maintained by me, John C., <a href = "https://www.twitter.com/CodeIsLife101">CodeIsLife101</a> on twitter andI can be found
+Solar2DGUI is maintained by me, John Charles, <a href = "https://www.twitter.com/CodeIsLife101">CodeIsLife101</a> on twitter andI can be found
 under the same name here: <a href = "https://t.co/Wx1BfiNx9Y">Shibori Clan: Shib Ninja Token</a> on Telegram, <a href = "https://discord.gg/4FFXcmeg">Discord</a> and our webpage is <a href = "https://shibninja.com/dojo">Shibori Dojo</a>. Feel free to stop by and say hello!
 
 ![Shibori Clan Logo](logo.png)
